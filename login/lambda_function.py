@@ -1,7 +1,7 @@
 import json
 
 def hello_world(name):
-    test = 'Hello World'
+    test = f'Hello World {name}'
     return test
 
 def lambda_handler(event, context):
@@ -9,5 +9,5 @@ def lambda_handler(event, context):
     return {
         'statusCode': 200,
         'body': json.dumps('Hello from Lambda!'),
-        'response': json.dumps(test)
+        'response': test
     }
