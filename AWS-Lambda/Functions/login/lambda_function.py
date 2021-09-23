@@ -1,13 +1,29 @@
 import json
+from dbc import DBC
+from hashlib import sha256
 
-def hello_world(name):
-    test = f'Hello World {name}'
-    return test
+def approve_login(user,password):
+    dbHandler = DBC()
+    dbHandler.SQL_initialize()
+
+    password = password.encode()
+    password = sha256(password).hexdigest()
+
+    query = f"SELECT idUsuario FROM Usuario WHERE idUsuario = \"{user}\" AND contrasena = \"{password}\""
+
+    queryResult = dbHandler.SQL_execute_twoway_statement(query)[0][0]   
+
+    if queryResult:
+        approval = 1
+    else:
+        approval = 0
+
+    return approval
 
 def lambda_handler(event, context):
-    test = hello_world(event['name'])
+    
+    approval = approve_login(event['user'],event['password'])
     return {
-        'statusCode': 200,
-        'body': json.dumps('Hello from Lambda!'),
-        'response': test
+        'loginApproval': approval
+
     }
