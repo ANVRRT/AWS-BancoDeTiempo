@@ -9,6 +9,14 @@ Create Table If Not Exists Usuario(
 	ubicacion VARCHAR(255) NOT NULL,
 	PRIMARY KEY(idUsuario)
 );
+Create Table If Not Exists Documentos(
+	idUser VARCHAR(255) NOT NULL,
+	ine VARCHAR(255) NOT NULL,
+    comprobante VARCHAR(255) NOT NULL,
+    cartaAntecedentes VARCHAR(255) NOT NULL,
+    PRIMARY KEY(idUser),
+	FOREIGN KEY(idUser) REFERENCES Usuario(idUsuario)
+);
 CREATE TABLE Admin(id varchar(255)  NOT NULL,
  					  contrasena varchar(255) NOT NULL,
  					  PRIMARY KEY (id),
