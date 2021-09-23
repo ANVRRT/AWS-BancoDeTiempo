@@ -47,11 +47,12 @@ Create Table If Not Exists Recibe(
     comentario VARCHAR(255) NOT NULL,
     PRIMARY KEY(idCita),
     FOREIGN KEY(idServicio) REFERENCES Servicios(idServicio),
-    FOREIGN KEY(idReceptor, idEmisor) REFERENCES Usuario(idUsuario)
+    FOREIGN KEY(idReceptor) REFERENCES Usuario(idUsuario),
+    FOREIGN KEY(idEmisor) REFERENCES Usuario(idUsuario)
 );
 
 CREATE TABLE If Not Exists Admin(
     id varchar(255)  NOT NULL,
     contrasena varchar(255) NOT NULL,
-    PRIMARY KEY (id),
+    PRIMARY KEY (id)
 );
