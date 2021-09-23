@@ -6,12 +6,12 @@ def approve_login(user,password):
     dbHandler = DBC()
     dbHandler.SQL_initialize()
 
-    password = password.encode()
-    password = sha256(password).hexdigest()
+    # password = password.encode()
+    # password = sha256(password).hexdigest()
 
     query = f"SELECT idUsuario FROM Usuario WHERE idUsuario = \"{user}\" AND contrasena = \"{password}\""
 
-    queryResult = dbHandler.SQL_execute_twoway_statement(query)[0][0]   
+    queryResult = dbHandler.SQL_execute_twoway_statement(query)
 
     if queryResult:
         approval = 1

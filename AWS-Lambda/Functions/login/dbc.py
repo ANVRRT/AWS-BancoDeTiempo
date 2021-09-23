@@ -15,6 +15,9 @@ class DBC:
     def SQL_initialize(self):
         self.connection = mysql.connect(**self.mySQLConfig)
 
+    def SQL_stop(self):
+        self.connection.close()
+        
     def SQL_execute_oneway_statement(self,query):
         try:
             statement = self.connection.cursor()
