@@ -12,6 +12,7 @@ Create Table If Not Exists Usuario(
 	CPP INT NOT NULL,
 	contrasena VARCHAR(255) NOT NULL,
 	estatusHoras INT NOT NULL,
+	foto VARCHAR(255) NOT NULL,
     documentos_approval tinyint(1) NOT NULL,
 	PRIMARY KEY(idUsuario)
 );
