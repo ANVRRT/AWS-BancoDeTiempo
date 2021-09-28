@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color:black;
+    height: 100vh;
+}
+.titleB{
+    text-align: center;
+    font-family: fantasy;
+    font-size:x-large;
+    color: black;
+}
+#login .containerI #login-row #login-column #login-box {
+    margin-top: 120px;
+    max-width: 600px;
+    height: 320px;
+    border: 1px solid #9C9C9C;
+  background-color: #EAEAEA;
+}
+#login .containerI #login-row #login-column #login-box #login-form {
+    padding: 20px;
+}
+#login .containerI #login-row #login-column #login-box #login-form #register-link {
+    margin-top: -85px;
+}
