@@ -24,9 +24,9 @@ def approve_login(user,password):
             'username': queryResult[0],
             'name': queryResult[1],
             'lastName': queryResult[2],
-            'email': queryResult[5],
-            'statusHours': queryResult[7],
-            'documentosApproval': queryResult[8]
+            'email': queryResult[9],
+            'statusHours': queryResult[12],
+            'documentosApproval': queryResult[14]
             }
     else:
         approval = 0
