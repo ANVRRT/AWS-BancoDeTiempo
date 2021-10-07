@@ -118,6 +118,8 @@ def create_service(data):
         return response
     else:
         response["transactionApproval"] = 1
+        
+    dbHandler.SQL_stop()
 
     return response
 
