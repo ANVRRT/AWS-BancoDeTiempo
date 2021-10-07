@@ -12,5 +12,3 @@ class LoginForm(FlaskForm):
     user_id = StringField('Usuario:', validators=[DataRequired()])
     password = PasswordField('Contraseña:', validators=[DataRequired()])
     submit = SubmitField('Iniciar Sesión')
-
-

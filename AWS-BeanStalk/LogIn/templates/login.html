@@ -19,7 +19,7 @@
             </div>
         </div>
         <div id="login">
-            <
+            
             <div class="container">
                 <div id="login-row" class="row justify-content-center align-items-center">
                     <div id="login-column" class="col-md-6">
@@ -46,6 +46,9 @@
                                 </div>
                                 
                             </form>
+                            <div>
+                                <h6 class="errorLogIn">{% if msg %}{{ msg }}{% endif %}</h6>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -23,3 +23,35 @@ body {
 #login .containerI #login-row #login-column #login-box #login-form #register-link {
     margin-top: -85px;
 }
+.errorLogIn{
+    font-family: cursive;
+    font-size: x-small;
+    color: red;
+}
+
+table {
+    align-self: center;
+    border: #9C9C9C solid 1px;
+    border-radius: 2px;
+    width: 70%;
+    margin: auto;
+    
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {background-color:antiquewhite;}
+
+.tableUsers{
+    display: table;
+    width: 70%;
+    margin: auto;
+}
+
+
+
+
