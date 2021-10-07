@@ -34,6 +34,7 @@ Create Table If Not Exists Servicios(
     categoria  VARCHAR(255) NOT NULL,
     nombre     VARCHAR(255) NOT NULL,
     descripcion VARCHAR(255) NOT NULL,
+    estado     tinyint(1) DEFAULT 1,
     certificado VARCHAR(255) NOT NULL,
     image 	VARCHAR(255) NOT NULL,
     tiempoActivo TIME NOT NULL,
