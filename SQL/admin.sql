@@ -46,7 +46,7 @@ Create Table If Not Exists Servicios(
     FOREIGN KEY(idUsuario) REFERENCES Usuario(idUsuario)
 );
 Create Table If Not Exists Recibe(
-    idCita VARCHAR(255) NOT NULL,
+    idCita VARCHAR(255) NOT NULL AUTO_INCREMENT,
     idReceptor VARCHAR(255) NOT NULL,
     idServicio INT NOT NULL,
     idEmisor VARCHAR(255) NOT NULL,
