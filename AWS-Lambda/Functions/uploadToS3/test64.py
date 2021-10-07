@@ -13,7 +13,8 @@ imageBase64String = imageBase64.decode("utf-8")
 
 callAPI = "https://bka70s5pka.execute-api.us-east-1.amazonaws.com/API/uploadimage"
 data = {
-    "username": "anvrrtr",
+    "type": "ProfilePicture",
+    "username": "alberto_123",
     "image": imageBase64String
 
 }
