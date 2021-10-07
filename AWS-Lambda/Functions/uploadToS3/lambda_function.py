@@ -24,7 +24,7 @@ def generate_file_path(username, imageType):
     if imageType == "CartaAntecedentesPicture":
 
         filename = f"{username}_cartaAntecedentes.png"
-        filepath = f"cartaAntecedente/{username}_cartaAntecedente.jpg"
+        filepath = f"cartaAntecedentes/{username}_cartaAntecedente.jpg"
 
     return filename, filepath
 
@@ -89,7 +89,7 @@ def upload_image(image64, username, imageType):
         data = {
                 "transactionApproval": 0
                 }
-        return 0
+        return data
 
 
 
