@@ -35,6 +35,7 @@ Create Table If Not Exists Servicios(
     nombre     VARCHAR(255) NOT NULL,
     descripcion VARCHAR(255) NOT NULL,
     certificado VARCHAR(255) NOT NULL,
+    image 	VARCHAR(255) NOT NULL,
     tiempoActivo TIME NOT NULL,
     V0 INT NOT NULL,
     V1 INT NOT NULL,
