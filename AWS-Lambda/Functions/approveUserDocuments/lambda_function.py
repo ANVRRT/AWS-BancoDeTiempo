@@ -71,4 +71,6 @@ def lambda_handler(event, context):
         },
         'body': json.dumps(transaction)
     }
+    dbHandler.SQL_stop()
+
     return data
