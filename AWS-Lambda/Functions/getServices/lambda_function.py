@@ -6,7 +6,7 @@ def get_services(colonia, category):
     dbHandler = DBC()
     dbHandler.SQL_initialize()
 
-    query = f"SELECT idServicio, Servicios.idUsuario, colonia, Servicios.nombre, descripcion, certificado, image, Usuario.nombre as nombreU, Usuario.apellidoP, foto FROM Servicios LEFT JOIN Usuario ON Servicios.idUsuario = Usuario.idUsuario WHERE ubicacion = \"{colonia}\" AND categoria = \"{category}\" AND estado = 1"
+    query = f"SELECT idServicio, Servicios.idUsuario, colonia, Servicios.nombre, descripcion, certificado, image, Usuario.nombre as nombreU, Usuario.apellidoP, foto FROM Servicios LEFT JOIN Usuario ON Servicios.idUsuario = Usuario.idUsuario WHERE ubicacion = \"{colonia}\" AND categoria = \"{category}\" AND Servicios.estado = 1"
 
     queryResult = dbHandler.SQL_execute_twoway_statement(query)
 
