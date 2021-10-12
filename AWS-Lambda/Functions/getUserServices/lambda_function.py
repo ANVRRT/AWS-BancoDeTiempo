@@ -6,7 +6,7 @@ def get_user_services(username):
     dbHandler = DBC()
     dbHandler.SQL_initialize()
 
-    query = f"SELECT * FROM Servicios WHERE idUsuario = \"{username}\" "
+    query = f"SELECT * FROM Servicios WHERE idUsuario = \"{username}\" AND estado = 1"
 
     queryResult = dbHandler.SQL_execute_twoway_statement(query)
 
