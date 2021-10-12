@@ -1,4 +1,5 @@
 import json
+import requests
 from dbc import DBC
 
 def error_processor(error, idUsuario,correo):
@@ -8,7 +9,6 @@ def error_processor(error, idUsuario,correo):
                 "None": ""
                 }
     errorMessage = "Error not found in list"
-    print(error)
     try:
         error.index(idUsuario)
         errorMessage = errorList[idUsuario]
@@ -43,7 +43,7 @@ def approve_register(data):
                         \"{data['correo']}\",
                         {data['CPP']},
                         \"{data['contrasena']}\",
-                        1,
+                        0,
                         "NULL",
                         0
                 )   
@@ -95,24 +95,24 @@ def approve_register(data):
     #return 1
 
 def lambda_handler(event, context):
+    
+    image = event["image"]
 
     data = approve_register(event)
-    return data
 
-if __name__ == "__main__":
-    data = {
-        "idUsuario": "Marco",
-        "nombre": "Marco",
-        "apellidoP": "Almazan",
-        "apellidoM": "Martínez",
-        "calle": "Nose",
-        "numero": "1",
-        "colonia": "ColoniaX",
-        "municipio": "MunicipioX",
-        "estado": "EstadoX",
-        "correo": "CorreoX@gmail.com",
-        "CPP": 50963,
-        "contrasena": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5"
-        }
-    data2 = approve_register(data)
-    print(data2)
+    callAPI = "https://bka70s5pka.execute-api.us-east-1.amazonaws.com/API/uploadimage"
+    dataPhoto = {
+        "image": image,
+        "type": "ProfilePicture",
+        "username": event["idUsuario"]
+    }
+    response = requests.post(callAPI, json.dumps(dataPhoto))
+    response = json.loads(response.content)
+    transactionApproval = response["transactionApproval"]
+
+    if not transactionApproval:
+        data["registerApproval"] = 0
+        data["error"] = "Error submiting image"
+
+
+    return data
