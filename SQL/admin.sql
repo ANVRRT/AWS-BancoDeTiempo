@@ -37,7 +37,6 @@ Create Table If Not Exists Servicios(
     estado     tinyint(1) DEFAULT 1,
     certificado VARCHAR(255) NOT NULL,
     image 	VARCHAR(255) NOT NULL,
-    tiempoActivo TIME NOT NULL,
     V0 INT NOT NULL,
     V1 INT NOT NULL,
     V2 INT NOT NULL,
