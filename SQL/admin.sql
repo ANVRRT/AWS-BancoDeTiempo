@@ -60,6 +60,16 @@ Create Table If Not Exists Recibe(
     FOREIGN KEY(idEmisor) REFERENCES Usuario(idUsuario)
 );
 
+Create Table If Not Exists Notificacion(
+    idEmisor VARCHAR(255) NOT NULL,
+    idReceptor VARCHAR(255) NOT NULL,
+    idServicio INT NOT NULL,
+    tipo VARCHAR(255) NOT NULL,
+    FOREIGN KEY(idEmisor) REFERENCES Servicios(idUsuario),
+    FOREIGN KEY(idReceptor) REFERENCES Usuario(idUsuario),
+    FOREIGN KEY(idServicio) REFERENCES Servicios(idServicio)
+);
+
 CREATE TABLE If Not Exists Admin(
     id varchar(255)  NOT NULL,
     contrasena varchar(255) NOT NULL,
