@@ -65,6 +65,7 @@ Create Table If Not Exists Notificacion(
     idReceptor VARCHAR(255) NOT NULL,
     idServicio INT NOT NULL,
     tipo VARCHAR(255) NOT NULL,
+    PRIMARY KEY(idNotificacion),
     FOREIGN KEY(idEmisor) REFERENCES Servicios(idUsuario),
     FOREIGN KEY(idReceptor) REFERENCES Usuario(idUsuario),
     FOREIGN KEY(idServicio) REFERENCES Servicios(idServicio)
