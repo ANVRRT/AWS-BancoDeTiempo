@@ -60,6 +60,7 @@ Create Table If Not Exists Recibe(
 );
 
 Create Table If Not Exists Notificacion(
+    idNotificacion INT NOT NULL AUTO_INCREMENT,
     idEmisor VARCHAR(255) NOT NULL,
     idReceptor VARCHAR(255) NOT NULL,
     idServicio INT NOT NULL,
