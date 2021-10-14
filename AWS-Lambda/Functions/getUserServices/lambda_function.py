@@ -26,6 +26,7 @@ def get_user_services(username):
                     "apellidoUsuario": service[8],
                     "foto": service[9]
                     })
+    dbHandler.SQL_stop()
 
     return data
 

@@ -31,6 +31,8 @@ def getNotifications(username):
                     "nombre": service[5],
                     "descripcion": service[6]
                     })
+                    
+    dbHandler.SQL_stop()
 
     return data
 

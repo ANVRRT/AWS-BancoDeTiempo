@@ -26,7 +26,7 @@ def check_active_hours(dbHandler, username):
 def remove_active_hours(dbHandler, username):
 
     query = f"UPDATE Usuario SET estatusHoras = 0 WHERE idUsuario = \"{username}\""
-    queryResult = dbHandler.SQL_execute_oneway_statement(query)
+    dbHandler.SQL_execute_oneway_statement(query)
 
 def deactivate_REQUEST_notifications(dbHandler, username, userType):
 
@@ -35,12 +35,12 @@ def deactivate_REQUEST_notifications(dbHandler, username, userType):
     elif userType == "Receptor":
         query = f"UPDATE Notificacion SET estado = 0 WHERE idReceptor = \"{username}\" AND tipo = \"REQUEST\" "
     
-    queryResult = dbHandler.SQL_execute_oneway_statement(query)
+    dbHandler.SQL_execute_oneway_statement(query)
 
 def deactivate_services(dbHandler, username):
 
     query = f"UPDATE Servicios SET estado = 0 WHERE idUsuario = \"{username}\" "
-    queryResult = dbHandler.SQL_execute_oneway_statement(query)
+    dbHandler.SQL_execute_oneway_statement(query)
 
 def activate_service(dbHandler, idReceptor, idEmisor, idServicio):
     query = f"""INSERT INTO Recibe VALUES(
@@ -51,7 +51,7 @@ def activate_service(dbHandler, idReceptor, idEmisor, idServicio):
             \"OPEN\"
             )
             """
-    queryResult = dbHandler.SQL_execute_oneway_statement(query)
+    dbHandler.SQL_execute_oneway_statement(query)
     
 # def update_notification_to_accepted(dbHandler, idNot):
 #     query = f"UPDATE Notification SET tipo = \"ACCEPTED\" WHERE idNotificacion = {idNot}"
@@ -157,7 +157,8 @@ def process_notification(dataReceived):
 
         data["transactionApproval"] = 0
         
-        
+    dbHandler.SQL_stop()
+    
     return data
 
 def lambda_handler(event, context):

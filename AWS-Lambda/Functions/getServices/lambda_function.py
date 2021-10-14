@@ -27,6 +27,7 @@ def get_services(colonia, category,username):
                     "apellidoUsuario": service[8],
                     "foto": service[9]
                     })
+    dbHandler.SQL_stop()
 
     return data
 
