@@ -1,7 +1,14 @@
 from dbc import DBC
 
-def check_active_service(dbHandler ,username, userType):
+def check_REQUEST_notifications(dbHandler, idReceptor, idEmisor):
+    query = f"SELECT idNotificacion FROM Notificacion WHERE idReceptor = \"{idReceptor}\" AND idEmisor = \"{idEmisor}\" AND tipo = \"REQUEST\" "
+    queryResult = dbHandler.SQL_execute_twoway_statement(query)
 
+    if queryResult:
+        return True
+    return False
+
+def check_active_service(dbHandler ,username, userType):
     if userType == "Emisor":
         query = f"SELECT estado FROM Recibe WHERE idEmisor = \"{username}\" AND estado = \"OPEN\" "
 
@@ -11,25 +18,21 @@ def check_active_service(dbHandler ,username, userType):
     queryResult = dbHandler.SQL_execute_twoway_statement(query)
     if queryResult:
         return True
-
     return False
 
 def check_active_hours(dbHandler, username):
-
     query = f"SELECT estatusHoras FROM Usuario WHERE idUsuario = \"{username}\" AND estatusHoras = 1 "
     queryResult = dbHandler.SQL_execute_twoway_statement(query)
     
-    if not queryResult:
-        return False
-    return True
+    if queryResult:
+        return True
+    return False
 
 def remove_active_hours(dbHandler, username):
-
     query = f"UPDATE Usuario SET estatusHoras = 0 WHERE idUsuario = \"{username}\""
     dbHandler.SQL_execute_oneway_statement(query)
 
 def deactivate_REQUEST_notifications(dbHandler, username, userType):
-
     if userType == "Emisor":
         query = f"UPDATE Notificacion SET estado = 0 WHERE idEmisor = \"{username}\" AND tipo = \"REQUEST\" "
     elif userType == "Receptor":
@@ -38,11 +41,10 @@ def deactivate_REQUEST_notifications(dbHandler, username, userType):
     dbHandler.SQL_execute_oneway_statement(query)
 
 def deactivate_services(dbHandler, username):
-
     query = f"UPDATE Servicios SET estado = 0 WHERE idUsuario = \"{username}\" "
     dbHandler.SQL_execute_oneway_statement(query)
 
-def activate_service(dbHandler, idReceptor, idEmisor, idServicio):
+def open_service(dbHandler, idReceptor, idEmisor, idServicio):
     query = f"""INSERT INTO Recibe VALUES(
             NULL,
             \"{idReceptor}\",
@@ -52,27 +54,23 @@ def activate_service(dbHandler, idReceptor, idEmisor, idServicio):
             )
             """
     dbHandler.SQL_execute_oneway_statement(query)
-    
-# def update_notification_to_accepted(dbHandler, idNot):
-#     query = f"UPDATE Notification SET tipo = \"ACCEPTED\" WHERE idNotificacion = {idNot}"
-#     queryResult = dbHandler.SQL_execute_oneway_statement(query)
-
 
 def preprocess_transaction(dbHandler, data):
-
     if data["tipo"] == "REQUEST":
-
         activeHours = check_active_hours(dbHandler,data["idReceptor"])
         if not activeHours:
+            return False
+
+        activeNotification = check_REQUEST_notifications(dbHandler, data["idReceptor"], data["idEmisor"])
+        if activeNotification:
             return False
 
         activeService = check_active_service(dbHandler, data['idEmisor'], "Emisor")
         if activeService:
             return False
 
+
     elif data["tipo"] == "ACCEPTED":
-
-
         #Check hours of the one that wants the service
         activeHours = check_active_hours(dbHandler,data["idReceptor"])
         if not activeHours:
@@ -107,7 +105,7 @@ def preprocess_transaction(dbHandler, data):
         deactivate_services(dbHandler, data['idEmisor'])
 
         #Generate registry of Recibe table setting an "OPEN" service for the 2 actors.
-        activate_service(dbHandler, data["idReceptor"], data["idEmisor"], data["idServicio"])
+        open_service(dbHandler, data["idReceptor"], data["idEmisor"], data["idServicio"])
 
         #Update REQUEST notification to ACCEPTED and activate it again
         #It gets done in the main defined query
