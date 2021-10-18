@@ -13,8 +13,18 @@ def getNotifications(username):
 
                 SELECT idNotificacion, idEmisor, idReceptor, Notificacion.idServicio, tipo, nombre, descripcion FROM Notificacion INNER JOIN Servicios 
                     ON Servicios.idServicio = Notificacion.idServicio 
-                    WHERE (idReceptor = \"{username}\" AND (tipo = \"ACCEPTED\" OR tipo = \"REJECTED\") ) AND Notificacion.estado = 1
+                    WHERE (idReceptor = \"{username}\" AND tipo = "REJECTED\" ) AND Notificacion.estado = 1
                     """
+    # query = f"""SELECT idNotificacion, idEmisor, idReceptor, Notificacion.idServicio, tipo, nombre, descripcion FROM Notificacion INNER JOIN Servicios 
+    #                 ON Servicios.idServicio = Notificacion.idServicio 
+    #                 WHERE (idEmisor = \"{username}\" AND tipo = \"REQUEST\") AND Notificacion.estado = 1
+
+    #                 UNION
+
+                # SELECT idNotificacion, idEmisor, idReceptor, Notificacion.idServicio, tipo, nombre, descripcion FROM Notificacion INNER JOIN Servicios 
+                #     ON Servicios.idServicio = Notificacion.idServicio 
+                #     WHERE (idReceptor = \"{username}\" AND (tipo = \"ACCEPTED\" OR tipo = \"REJECTED\") ) AND Notificacion.estado = 1
+    #                 """
 
     queryResult = dbHandler.SQL_execute_twoway_statement(query)
 
@@ -49,8 +59,9 @@ def getNotifications(username):
                     "nombre": service[5],
                     "descripcion": service[6]
                     })
-    query3 = f"""SELECT idNotificacion, idEmisor, idReceptor, Notificacion.idServicio, tipo, nombre, descripcion FROM Notificacion INNER JOIN Servicios 
+    query3 = f"""SELECT idNotificacion, idEmisor, idReceptor, Notificacion.idServicio, tipo, Servicios.nombre, descripcion, Usuario.nombre, apellidoP, apellidoM, correo FROM Notificacion INNER JOIN Servicios 
                     ON Servicios.idServicio = Notificacion.idServicio 
+                    INNER JOIN Usuario ON idReceptor = Usuario.idUsuario
                     WHERE (idEmisor = \"{username}\" AND tipo = \"ACCEPTED\") AND Notificacion.estado = 1
                 """
 
@@ -65,7 +76,35 @@ def getNotifications(username):
                     "idServicio": service[3],
                     "tipo": "CONTACTING",
                     "nombre": service[5],
-                    "descripcion": service[6]
+                    "descripcion": service[6],
+                    "nombreUsuario": service[7],
+                    "nombreApellidoP": service[8],
+                    "nombreApellidoM": service[9],
+                    "correo": service[10]
+                    })
+
+    query4 = f"""SELECT idNotificacion, idEmisor, idReceptor, Notificacion.idServicio, tipo, Servicios.nombre, descripcion, Usuario.nombre, apellidoP, apellidoM, correo FROM Notificacion INNER JOIN Servicios 
+                    ON Servicios.idServicio = Notificacion.idServicio
+                    INNER JOIN Usuario ON Servicios.idUsuario = Usuario.idUsuario
+                    WHERE (idReceptor = \"{username}\" AND tipo = \"ACCEPTED\" ) AND Notificacion.estado = 1
+                """
+
+    queryResult4 = dbHandler.SQL_execute_twoway_statement(query4)
+
+    for service in queryResult4:
+        
+        data["notificaciones"].append({
+                    "idNot": service[0],
+                    "idEmisor": service[1],
+                    "idReceptor": service[2],
+                    "idServicio": service[3],
+                    "tipo": service[4],
+                    "nombre": service[5],
+                    "descripcion": service[6],
+                    "nombreUsuario": service[7],
+                    "nombreApellidoP": service[8],
+                    "nombreApellidoM": service[9],
+                    "correo": service[10]
                     })
 
                     

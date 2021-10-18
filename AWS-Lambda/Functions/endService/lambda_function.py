@@ -14,7 +14,7 @@ def activate_services(dbHandler, username):
 
 def rate_service(dbHandler, idServicio, stars):
 
-    query = f"UPDATE Servicios SET {stars} = {stars} + 1 WHERE idServicio = {idServicio} "
+    query = f"UPDATE Servicios SET {stars} = {stars} + 1 WHERE idServicio = \"{idServicio}\" "
     dbHandler.SQL_execute_oneway_statement(query)
 
 def change_notification_to_ended(dbHandler, idNot):
@@ -24,7 +24,11 @@ def change_notification_to_ended(dbHandler, idNot):
 
 def close_registry_service(dbHandler, idServicio):
 
-    query = f"UPDATE Recibe SET estado = \"CLOSED\" WHERE estado = \"OPEN\" "
+    query = f"UPDATE Recibe SET estado = \"CLOSED\" WHERE estado = \"OPEN\" AND idServicio = \"{idServicio}\" "
+    dbHandler.SQL_execute_oneway_statement(query)
+
+def activate_hours(dbHandler, username):
+    query = f"UPDATE Usuario SET estatusHoras = 1 WHERE idUsuario = \"{username}\" "
     dbHandler.SQL_execute_oneway_statement(query)
 
 def end_service(data):
@@ -43,6 +47,12 @@ def end_service(data):
     change_notification_to_ended(dbHandler, data["idNotificacion"])
     close_registry_service(dbHandler, data["idServicio"])
 
+    if data["asistencia"]:
+        activate_hours(dbHandler, data["idEmisor"])
+    else:
+        activate_hours(dbHandler, data["idReceptor"])
+
+
     response = {
                 "transactionApproval": 1
                 }
@@ -56,10 +66,13 @@ def lambda_handler(event, context):
             "idReceptor" : event["idReceptor"],
             "idEmisor" : event["idEmisor"],
             "idNotificacion": event["idNotificacion"],
-            "stars": event["stars"]
+            "stars": event["stars"],
+            "asistencia": event["asistencia"]
             }
     
+    
     data = end_service(data)
+
     
 
     return data

@@ -59,32 +59,32 @@ def preprocess_transaction(dbHandler, data):
     if data["tipo"] == "REQUEST":
         activeHours = check_active_hours(dbHandler,data["idReceptor"])
         if not activeHours:
-            return False
+            return False, "Sin horas disponibles"
 
         activeNotification = check_REQUEST_notifications(dbHandler, data["idReceptor"], data["idEmisor"])
         if activeNotification:
-            return False
+            return False, "El servicio ya ha sido solicitado"
 
         activeService = check_active_service(dbHandler, data['idEmisor'], "Emisor")
         if activeService:
-            return False
+            return False, "El servicio no está disponible"
 
 
     elif data["tipo"] == "ACCEPTED":
         #Check hours of the one that wants the service
         activeHours = check_active_hours(dbHandler,data["idReceptor"])
         if not activeHours:
-            return False
+            return False, "Sin horas disponibles"
 
         #Check if no service is currently going on the one that wants the service
         activeService = check_active_service(dbHandler, data['idReceptor'], "Receptor")
         if activeService:
-            return False
+            return False, "El servicio no está disponible"
 
         #Check if the one that is giving the service has no other currently going on services.
         activeService = check_active_service(dbHandler, data['idEmisor'], "Emisor")
         if activeService:
-            return False
+            return False, "El servicio no está disponible"
 
 
         #Delete hours of the one that wants the service
@@ -111,7 +111,7 @@ def preprocess_transaction(dbHandler, data):
         #It gets done in the main defined query
         
 
-    return True
+    return True, ""
 
 def define_query(data):
 
@@ -126,7 +126,7 @@ def define_query(data):
                     )
                     """
     else:
-        query = f"UPDATE Notificacion SET tipo = \"{data['tipo']}\" WHERE idNotificacion = {data['idNot']}"
+        query = f"UPDATE Notificacion SET tipo = \"{data['tipo']}\", estado = 1 WHERE idNotificacion = {data['idNot']}"
 
     return query
 
@@ -138,10 +138,11 @@ def process_notification(dataReceived):
     dbHandler.SQL_initialize()
 
     data = {
-        "transactionApproval": 1
+        "transactionApproval": 1,
+        "error": ""
         }
 
-    approval = preprocess_transaction(dbHandler, dataReceived)
+    approval, error = preprocess_transaction(dbHandler, dataReceived)
 
     if approval:
 
@@ -151,9 +152,16 @@ def process_notification(dataReceived):
 
         if not queryResult:
             data["transactionApproval"] = 0
+            data["error"] = "Algo salió mal"
+        else:
+            if dataReceived["tipo"] == "REJECTED":
+                data["transactionApproval"] = 2
+            if dataReceived["tipo"] == "ENDED":
+                data["transactionApproval"] = 3
     else:
 
         data["transactionApproval"] = 0
+        data["error"] = error
         
     dbHandler.SQL_stop()
     
