@@ -26,6 +26,9 @@ def approve_all(dbHandler, username):
     if not queryResult2:
         return False
 
+    query3 = f"UPDATE Servicios SET estado = 1 WHERE idUsuario = \"{username}\" "
+    dbHandler.SQL_execute_oneway_statement(query3)
+
     return True
 
 
@@ -71,6 +74,7 @@ def lambda_handler(event, context):
         },
         'body': json.dumps(transaction)
     }
+    
     dbHandler.SQL_stop()
 
     return data

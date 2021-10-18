@@ -1,15 +1,16 @@
 import boto3
 from dbc import DBC
 
-def get_user_services(username):
+def get_services(colonia, category,username):
 
     dbHandler = DBC()
     dbHandler.SQL_initialize()
 
-    query = f"SELECT idServicio, Servicios.idUsuario, colonia, Servicios.nombre, descripcion, certificado, image, Usuario.nombre as nombreU, Usuario.apellidoP, foto FROM Servicios LEFT JOIN Usuario ON Servicios.idUsuario = Usuario.idUsuario WHERE Servicios.idUsuario = \"{username}\" AND Servicios.estado = 1"
+    query = f"SELECT idServicio, Servicios.idUsuario, colonia, Servicios.nombre, descripcion, certificado, image, Usuario.nombre as nombreU, Usuario.apellidoP, foto FROM Servicios LEFT JOIN Usuario ON Servicios.idUsuario = Usuario.idUsuario WHERE ubicacion = \"{colonia}\" AND categoria = \"{category}\" AND Servicios.estado = 1 AND Servicios.idUsuario != \"{username}\""
 
     queryResult = dbHandler.SQL_execute_twoway_statement(query)
 
+    # data = query
     data = {"ofertas": []}
 
     for service in queryResult:
@@ -26,14 +27,17 @@ def get_user_services(username):
                     "apellidoUsuario": service[8],
                     "foto": service[9]
                     })
+    dbHandler.SQL_stop()
 
     return data
 
 def lambda_handler(event, context):
 
+    colonia = event["colonia"]
+    category = event["categoria"]
     username = event["username"]
 
-    data = get_user_services(username)
+    data = get_services(colonia, category,username)
     
 
     return data
