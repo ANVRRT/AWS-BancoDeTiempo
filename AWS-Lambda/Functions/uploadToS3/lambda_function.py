@@ -1,4 +1,3 @@
-import json
 import boto3
 from dbc import DBC
 import base64

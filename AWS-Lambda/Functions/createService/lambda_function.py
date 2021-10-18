@@ -1,4 +1,3 @@
-import json
 from dbc import DBC
 import boto3
 import base64
@@ -118,8 +117,6 @@ def create_service(data):
         return response
     else:
         response["transactionApproval"] = 1
-        
-    dbHandler.SQL_stop()
 
     return response
 

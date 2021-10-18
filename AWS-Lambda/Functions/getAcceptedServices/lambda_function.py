@@ -30,20 +30,6 @@ def getNotifications(username):
         data = {
                 "something": 0
             }
-    # data = {"notificaciones": []}
-
-    # for service in queryResult:
-        
-    #     data["notificaciones"].append({
-    #                 "idNot": service[0],
-    #                 "idReceptor": service[1],
-    #                 "idEmisor": service[2],
-    #                 "idServicio": service[3],
-    #                 "image": service[4],
-    #                 "nombre": service[5],
-    #                 "categoria": service[6],
-    #                 "descripcion": service[7]
-    #                 })
                     
     dbHandler.SQL_stop()
 
