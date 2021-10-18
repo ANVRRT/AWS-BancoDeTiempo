@@ -1,4 +1,3 @@
-import boto3
 from dbc import DBC
 
 def get_user_services(username):

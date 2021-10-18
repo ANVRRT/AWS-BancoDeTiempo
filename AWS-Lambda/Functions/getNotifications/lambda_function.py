@@ -15,16 +15,6 @@ def getNotifications(username):
                     ON Servicios.idServicio = Notificacion.idServicio 
                     WHERE (idReceptor = \"{username}\" AND tipo = "REJECTED\" ) AND Notificacion.estado = 1
                     """
-    # query = f"""SELECT idNotificacion, idEmisor, idReceptor, Notificacion.idServicio, tipo, nombre, descripcion FROM Notificacion INNER JOIN Servicios 
-    #                 ON Servicios.idServicio = Notificacion.idServicio 
-    #                 WHERE (idEmisor = \"{username}\" AND tipo = \"REQUEST\") AND Notificacion.estado = 1
-
-    #                 UNION
-
-                # SELECT idNotificacion, idEmisor, idReceptor, Notificacion.idServicio, tipo, nombre, descripcion FROM Notificacion INNER JOIN Servicios 
-                #     ON Servicios.idServicio = Notificacion.idServicio 
-                #     WHERE (idReceptor = \"{username}\" AND (tipo = \"ACCEPTED\" OR tipo = \"REJECTED\") ) AND Notificacion.estado = 1
-    #                 """
 
     queryResult = dbHandler.SQL_execute_twoway_statement(query)
 
