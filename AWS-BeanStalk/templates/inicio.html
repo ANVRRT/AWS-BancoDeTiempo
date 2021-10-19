@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" type="text/css">-->
+
+    <!--<script type="text/javascript" src="{{ url_for('static', filename='js/inicio.js') }}" ></script>-->
+    
+
+   
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <a class="navbar-brand" href="#">Bienvenido al sistema de administración</a>
+            
+            <a class="navbar-brand" href="/">Cerrar sesión</a>
+            
+        </div>
+    </nav>
+
+    <br>
+
+    <div>
+        <h4 class="text-center text-info">
+            A continuación se muestra un listado los usuarios que deberán de ser aprobados, de click en el botón
+            para visualizar sus documentos y aprobarlos.
+        </h4>
+    </div>
+
+    <br>
+    <br>
+    <div class= "tableUsers">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr style="text-align: center; vertical-align: middle;">
+                    {% for header in headings %}
+                    <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            {% for row in dataT %}
+            
+            <tr style="text-align: center; vertical-align: middle;">
+                
+                <td>
+                    {{dataT[row]["id"]}}
+                    
+                </td>
+                <td>
+                    {{dataT[row]["nombre"]}}
+                    
+                </td>
+                <td>
+                    {{ dataT[row]["apellido"]}}
+                    
+                </td>
+                
+                
+                <td style="text-align: center; vertical-align: middle;">
+                    {% if dataT[row]["ine_approval"] == 1 %}
+                    <input type="checkbox" disabled checked>
+                    {% else %}
+                    <input type="checkbox" disabled>
+                    {% endif %}
+                </td>
+                
+                <td style="text-align: center; vertical-align: middle;">
+                    {% if dataT[row]["comprobante_approval"] == 1 %}
+                    <input type="checkbox" disabled checked>
+                    {% else %}
+                    <input type="checkbox" disabled>
+                    {% endif %}
+                </td>
+
+                <td style="text-align: center; vertical-align: middle;">
+                    {% if dataT[row]["cartaAntecedentes_approval"] == 1 %}
+                    <input type="checkbox" disabled checked>
+                    {% else %}
+                    <input type="checkbox" disabled>
+                    {% endif %}
+                </td>
+                
+                <td style="text-align: center; vertical-align: middle;">
+                    
+                    <a href="{{ url_for('perfil',data=base.b64encode(json.dumps(dataT[row]).encode()).decode('utf-8'))}}" class="btn btn-info btn-md">Perfil de usuario</a>
+                </td>
+            </tr>
+            {% endfor %}
+            
+        </table>
+    </div>
+    
+
+    
+</body>
+{% endblock %}
