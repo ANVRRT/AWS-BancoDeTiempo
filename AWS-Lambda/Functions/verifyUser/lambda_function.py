@@ -162,6 +162,7 @@ def verify_account(username):
     query = f"UPDATE Usuario SET email_approval = 1 WHERE idUsuario = \"{username}\" "
     queryResult = dbHandler.SQL_execute_oneway_statement(query)
 
+    dbHandler.SQL_stop()
     if not queryResult:
         return 0
     

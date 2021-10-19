@@ -1,7 +1,7 @@
 from dbc import DBC
 
-def check_REQUEST_notifications(dbHandler, idReceptor, idEmisor):
-    query = f"SELECT idNotificacion FROM Notificacion WHERE idReceptor = \"{idReceptor}\" AND idEmisor = \"{idEmisor}\" AND tipo = \"REQUEST\" "
+def check_REQUEST_notifications(dbHandler, idReceptor, idEmisor, idServicio):
+    query = f"SELECT idNotificacion FROM Notificacion WHERE idReceptor = \"{idReceptor}\" AND idEmisor = \"{idEmisor}\" AND idServicio = \"{idServicio}\" AND tipo = \"REQUEST\" "
     queryResult = dbHandler.SQL_execute_twoway_statement(query)
 
     if queryResult:
@@ -61,7 +61,7 @@ def preprocess_transaction(dbHandler, data):
         if not activeHours:
             return False, "Sin horas disponibles"
 
-        activeNotification = check_REQUEST_notifications(dbHandler, data["idReceptor"], data["idEmisor"])
+        activeNotification = check_REQUEST_notifications(dbHandler, data["idReceptor"], data["idEmisor"], data["idServicio"])
         if activeNotification:
             return False, "El servicio ya ha sido solicitado"
 
