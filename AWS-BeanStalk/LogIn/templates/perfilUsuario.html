@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" type="text/css">
+    
+    <!--<script type="text/javascript" src="{{ url_for('static', filename='js/inicio.js') }}" ></script>-->
+    
+    <script type="text/javascript">
+        var data='{{data["id"]}}';
+        
+        function altaUsuario(data,type){
+            var url = "../Inicio";
+            if(confirm("¿Seguro que quieres autorizar al usuario '"+data+"' ?") == true){
+                url="https://bka70s5pka.execute-api.us-east-1.amazonaws.com/API/approveuserdocuments\?username="+data+"&type="+type;
+                
+                fetch(url, {
+                    method: 'GET'
+                })
+                .then(res => {
+                   
+                    return res.json()
+                })
+                .then((response) => {
+                    
+                    if(response["transactionApproval"] == 0){
+                        alert("ERROR al autorizar documentos");
+                    }
+                    else{
+                        alert("Documentos autorizados con éxito");
+                    }
+                })
+            }
+        }
+
+        
+    </script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles2.css') }}" type="text/css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <a class="navbar-brand" href="/#">Aprobacion de usuario</a>
+            <a class="navbar-brand" href="/Inicio">Listado de usuarios a aprobar</a>
+            <a class="navbar-brand" href="/">Cerrar sesión</a>
+        </div>
+    </nav>
+
+    <br>
+    <br>
+    <div class= "tableUsers">
+        <table class="table">
+            <thead class="thead-dark" >
+                <tr ><th colspan="4" style="text-align: center; vertical-align: middle;"><h3>Perfil general del usuario</h3></th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <h4>Foto de perfil</h4>
+                    </td>
+                    <td colspan="2">
+                        
+                        {% if data["foto"] != "NULL" %}
+                            <img src='{{data["foto"]}}'  width="200" height="250" >
+                        
+                        {% else %}
+                        <img src="https://i.pinimg.com/736x/a3/56/82/a3568280258666076234ca99c0df15b0.jpg"  width="200" height="250" >
+                        {% endif %}
+                        
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <h4>Id de usuario</h4>
+                    </td>
+                    <td colspan="2">
+                        
+                        <h5>{{data["id"]}}</h5>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <h4>Nombre</h4>
+                    </td>
+                    <td colspan="2">
+                        <h5>{{data["nombre"]}}</h5>
+                    </td>
+                </tr>
+                <tr >
+                    <td colspan="2">
+                        <h4>Apellido Paterno</h4>
+                    </td>
+                    <td colspan="2">
+                        <h5>{{data["apellido"]}}</h5>
+                    </td>
+                </tr>
+                
+                <tr class="table-info"><th colspan="4" style="text-align: center; vertical-align: middle;"><h3>Documentación</h3></th></tr>
+                <tr>
+                    <td colspan="2">
+                        
+                        <h4>Identificación</h4>
+                    </td>
+                    <td colspan="2">
+                        {% if data["ine"] != "NULL"%}
+                        <a href="{{ url_for('loadImg',data=base.b64encode(json.dumps(data['ine']).encode()).decode('utf-8'))}}" target="blank"><img src="{{data['ine']}}"  width="200" height="250" ></a>
+                        {% else %}
+                        <img src="https://prints.ultracoloringpages.com/f720c3e76ab022e11cf51e46cfb565a4.png"  width="200" height="250" >
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr >
+                    <td colspan="2">
+                        <h4>Comprobante de domicilio</h4>
+                    </td>
+                    <td colspan="2" >
+                        {% if data["comprobante"] != "NULL" %}
+
+                        <a href="{{ url_for('loadImg',data=base.b64encode(json.dumps(data['comprobante']).encode()).decode('utf-8'))}}" target="blank"><img src="{{data['comprobante']}}"  width="200" height="250" ></a>
+                        {% else %}
+                        <img src="https://prints.ultracoloringpages.com/f720c3e76ab022e11cf51e46cfb565a4.png"  width="200" height="250" >
+                        {% endif %}                    
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <h4>Carta de antecedentes no penales</h4>
+                    </td>
+                    <td colspan="2" >
+                        {% if data["cartaAntecedentes"] != "NULL"%}
+
+                        <a href="{{ url_for('loadImg',data=base.b64encode(json.dumps(data['cartaAntecedentes']).encode()).decode('utf-8'))}}" target="blank"><img src="{{data['cartaAntecedentes']}}"  width="200" height="250" ></a>
+                        {% else %}
+                        <img src="https://prints.ultracoloringpages.com/f720c3e76ab022e11cf51e46cfb565a4.png"  width="200" height="250" >
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td  style="text-align: center; vertical-align: middle;">
+                        
+                        <a  onclick="javascript:altaUsuario(data,'INE')"  class="btn btn-info btn-md">Autorizar identificación</a>
+                    </td>
+
+                    <td  style="text-align: center; vertical-align: middle;">
+                        
+                        <a onclick="javascript:altaUsuario(data,'Comprobante')"  class="btn btn-info btn-md">Autorizar comprobante</a>
+                    </td>
+                    <td  style="text-align: center; vertical-align: middle;">
+                        
+                        <a onclick="javascript:altaUsuario(data,'Carta')"  class="btn btn-info btn-md">Autorizar carta de antecedentes</a>
+                    </td>
+
+                    <td  style="text-align: center; vertical-align: middle;">
+                        <a onclick="javascript:altaUsuario(data,'All')" class="btn btn-info btn-md">Autorizar todo</a>
+                    </td>
+                    
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+    
+</body>
+{% endblock %}
