@@ -17,8 +17,10 @@ def get_stars(dbHandler, username):
         averageService = preAverageService / totalService
 
         preAverage += averageService
-    
-    average = preAverage / total
+    if total != 0:
+        average = preAverage / total
+    else:
+        average = 0
 
     return str(average)
 
